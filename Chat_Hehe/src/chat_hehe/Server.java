@@ -9,6 +9,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,10 +23,14 @@ public class Server extends javax.swing.JFrame {
     /**
      * Creates new form Client
      */
-     static ServerSocket ss;
+    public Statement st;
+    public ResultSet rs;
+    static ServerSocket ss;
     static Socket s;
     static DataInputStream dis;
     static DataOutputStream dos;
+    Connection cn = koneksi.koneksi.Koneksi();
+
     
     public Server() {
         initComponents();
@@ -126,7 +134,15 @@ public class Server extends javax.swing.JFrame {
     }//GEN-LAST:event_kirimActionPerformed
 
     private void kirim1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kirim1ActionPerformed
-        // TODO add your handling code here:
+        try {
+    st = cn.createStatement();
+    st.executeUpdate("INSERT INTO chat_history VALUES('" + pesan.getText() + "')");
+    JOptionPane.showMessageDialog(null, "Simpan Berhasil");
+    pesan.setText("");
+    
+  } catch (Exception e) {
+    e.printStackTrace();
+  }
     }//GEN-LAST:event_kirim1ActionPerformed
 
     /**
