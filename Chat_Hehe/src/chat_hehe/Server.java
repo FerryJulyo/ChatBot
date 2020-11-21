@@ -19,10 +19,11 @@ public class Server extends javax.swing.JFrame {
     /**
      * Creates new form Client
      */
-    static ServerSocket ss;
+     static ServerSocket ss;
     static Socket s;
     static DataInputStream dis;
     static DataOutputStream dos;
+    
     public Server() {
         initComponents();
     }
@@ -113,12 +114,14 @@ public class Server extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void kirimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kirimActionPerformed
-        try{
-            String msgout = "";
-            msgout = isiPesan.getText().trim();
-            dos.writeUTF(msgout);
-        }catch(Exception e){
-
+        try {
+            String pesanKeluar = "";
+            pesanKeluar = isiPesan.getText().trim();
+            String isi = pesan.getText() + "\nServer: " + isiPesan.getText();
+            pesan.setText(isi);
+            dos.writeUTF(pesanKeluar);
+            isiPesan.setText("");
+        } catch (Exception e) {
         }
     }//GEN-LAST:event_kirimActionPerformed
 
@@ -162,20 +165,17 @@ public class Server extends javax.swing.JFrame {
                 new Server().setVisible(true);
             }
         });
-        String magin = "";
-        try{
-            ss = new ServerSocket(1029);
+        String pesanMasuk = "";
+        try {
+            ss = new ServerSocket(1201);
             s = ss.accept();
-            
             dis = new DataInputStream(s.getInputStream());
             dos = new DataOutputStream(s.getOutputStream());
-            
-            while(magin.equals("exit")){
-                magin = dis.readUTF();
-                pesan.setText(pesan.getText().trim()+"\n"+magin);
+            while (!pesanMasuk.equals("exit")) {
+                pesanMasuk = dis.readUTF();
+                pesan.setText(pesan.getText().trim() + "\nClient: " + pesanMasuk);
             }
-        }catch(Exception e){
-            
+        } catch (Exception e) {
         }
     }
 

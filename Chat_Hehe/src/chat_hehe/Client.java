@@ -99,12 +99,14 @@ public class Client extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void kirimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kirimActionPerformed
-        try{
-            String msgout = "";
-            msgout = isiPesan.getText().trim();
-            dos.writeUTF(msgout);
-        }catch(Exception e){
-            
+        try {
+            String pesanKeluar = "";
+            pesanKeluar = isiPesan.getText().trim();
+            String isi = pesan.getText() + "\nClient: " + isiPesan.getText();
+            pesan.setText(isi);
+            dos.writeUTF(pesanKeluar);
+            isiPesan.setText("");
+        } catch (Exception e) {
         }
     }//GEN-LAST:event_kirimActionPerformed
 
@@ -142,17 +144,16 @@ public class Client extends javax.swing.JFrame {
             }
         });
         
-        try{
-            s = new Socket("127.0.0.1",1029);
+        String pesanMasuk = "";
+        try {
+            s = new Socket("127.0.0.1", 1201); //jangan lupa diisi IP+portnya
             dis = new DataInputStream(s.getInputStream());
-            String msgin="";
-            while(msgin.equals("exit")){
-                msgin = dis.readUTF();
-                pesan.setText(pesan.getText().trim()+"\n Server :\t"+msgin);
+            dos = new DataOutputStream(s.getOutputStream());
+            while (!pesanMasuk.equals("Exit")) {
+                pesanMasuk = dis.readUTF();
+                pesan.setText(pesan.getText().trim() + "\nServer: " + pesanMasuk);
             }
-            
-        }catch(Exception e){
-            
+        } catch (Exception e) {
         }
     }
 
